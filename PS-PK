@@ -1,0 +1,275 @@
+local PSArrowKA = Instance.new("ScreenGui")
+local all = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local player_holder = Instance.new("ScrollingFrame")
+local UIListLayout = Instance.new("UIListLayout")
+local player_template = Instance.new("Frame")
+local UICorner_2 = Instance.new("UICorner")
+local button = Instance.new("TextButton")
+local UICorner_3 = Instance.new("UICorner")
+local search_bar = Instance.new("TextBox")
+local selection_frame = Instance.new("Frame")
+local selected_label = Instance.new("TextLabel")
+local UICorner_4 = Instance.new("UICorner")
+local kill_button = Instance.new("TextButton")
+local UICorner_5 = Instance.new("UICorner")
+
+--Properties:
+
+PSArrowKA.Name = "PS - Arrow KA"
+PSArrowKA.Parent = game.CoreGui
+PSArrowKA.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+all.Name = "all"
+all.Parent = PSArrowKA
+all.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+all.BorderSizePixel = 0
+all.Position = UDim2.new(0.381489843, 0, 0.324546963, 0)
+all.Size = UDim2.new(0, 160, 0, 250)
+
+UICorner.Parent = all
+
+player_holder.Name = "player_holder"
+player_holder.Parent = all
+player_holder.Active = true
+player_holder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+player_holder.BackgroundTransparency = 1.000
+player_holder.BorderSizePixel = 0
+player_holder.Position = UDim2.new(0, 0, 0, 25)
+player_holder.Size = UDim2.new(1, 0, -0.140000001, 200)
+player_holder.ScrollBarThickness = 2
+
+UIListLayout.Parent = player_holder
+UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 5)
+
+player_template.Name = "player_template"
+player_template.Parent = UIListLayout
+player_template.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+player_template.Size = UDim2.new(0.949999988, 0, 0, 18)
+
+UICorner_2.CornerRadius = UDim.new(0, 5)
+UICorner_2.Parent = player_template
+
+button.Name = "button"
+button.Parent = player_template
+button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+button.Size = UDim2.new(1, 0, 1, 0)
+button.Font = Enum.Font.SourceSans
+button.Text = "<name>"
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.TextScaled = true
+button.TextSize = 14.000
+button.TextWrapped = true
+
+UICorner_3.CornerRadius = UDim.new(0, 5)
+UICorner_3.Parent = button
+
+search_bar.Name = "search_bar"
+search_bar.Parent = all
+search_bar.AnchorPoint = Vector2.new(0.5, 0)
+search_bar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+search_bar.BackgroundTransparency = 1.000
+search_bar.Position = UDim2.new(0.5, 0, 0, 3)
+search_bar.Size = UDim2.new(1, 0, 0, 18)
+search_bar.Font = Enum.Font.SourceSans
+search_bar.PlaceholderText = "Search..."
+search_bar.Text = ""
+search_bar.TextColor3 = Color3.fromRGB(255, 255, 255)
+search_bar.TextScaled = true
+search_bar.TextSize = 14.000
+search_bar.TextWrapped = true
+
+selection_frame.Name = "selection_frame"
+selection_frame.Parent = all
+selection_frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+selection_frame.BackgroundTransparency = 1.000
+selection_frame.Position = UDim2.new(0, 0, 0.772000015, 0)
+selection_frame.Size = UDim2.new(1, 0, -0.0240000002, 60)
+
+selected_label.Name = "selected_label"
+selected_label.Parent = selection_frame
+selected_label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+selected_label.BackgroundTransparency = 1.000
+selected_label.Size = UDim2.new(1, 0, -0.0833333358, 25)
+selected_label.Font = Enum.Font.SourceSans
+selected_label.Text = "Selected: <name>"
+selected_label.TextColor3 = Color3.fromRGB(255, 255, 255)
+selected_label.TextScaled = true
+selected_label.TextSize = 14.000
+selected_label.TextWrapped = true
+
+UICorner_4.CornerRadius = UDim.new(0, 5)
+UICorner_4.Parent = selected_label
+
+kill_button.Name = "kill_button"
+kill_button.Parent = selection_frame
+kill_button.AnchorPoint = Vector2.new(0.5, 0)
+kill_button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+kill_button.BorderSizePixel = 0
+kill_button.Position = UDim2.new(0.5, 0, 0.515148163, 0)
+kill_button.Size = UDim2.new(0.949999988, 0, 0, 20)
+kill_button.Font = Enum.Font.SourceSansBold
+kill_button.Text = "Insta Kill"
+kill_button.TextColor3 = Color3.fromRGB(150, 0, 0)
+kill_button.TextScaled = true
+kill_button.TextSize = 14.000
+kill_button.TextWrapped = true
+
+UICorner_5.CornerRadius = UDim.new(0, 5)
+UICorner_5.Parent = kill_button
+
+--// Services
+local uis = game:GetService("UserInputService")
+local ps = game:GetService("Players")
+
+--// Instances
+local lp = ps.LocalPlayer
+local connections = {}
+
+
+--// Drag
+local gui = all
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+local function update(input) -- Updates the position of the UI
+    local delta = input.Position - dragStart
+    gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+local function move(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = gui.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end
+
+gui.InputBegan:Connect(function(input)
+    move(input)
+end)
+
+gui.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+uis.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
+
+local function dc()
+    for _, c in pairs(connections) do
+        c:Disconnect()
+    end
+end
+
+connections["destroy"] = uis.InputBegan:Connect(function(input, isTyping)
+    if isTyping then return end
+
+    local key = string.sub(tostring(input.KeyCode), 14)
+    if key == "J" then
+        PSArrowKA:Destroy()
+        dc()
+        print("Destroyed.")
+    end
+end)
+
+--// Selected Player
+local selected_player = nil
+
+local function update_selected(player)
+    selected_player = player
+    selected_label.Text = player.Name
+end
+
+--// Kill
+local function kill()
+    local Handle_Initiate_S = game.ReplicatedStorage.Remotes.To_Server.Handle_Initiate_S
+    Handle_Initiate_S:FireServer("skil_ting_asd", game.Players.LocalPlayer, "arrow_knock_back", 5)
+
+    if selected_player.Character then
+        Handle_Initiate_S:FireServer("arrow_knock_back_damage", game.Players.LocalPlayer.Character, game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame, selected_player.Character, 0/0, 0/0)
+    end
+end
+
+kill_button.MouseButton1Click:Connect(function()
+    if selected_player == nil then print("Select a player first.") return end
+    kill()
+end)
+
+--// Search bar
+local function update_list()
+    for _, v in pairs(player_holder:GetChildren()) do
+        if not v:IsA("Frame") then continue end
+        if string.find(string.lower(v.Name), string.lower(search_bar.Text)) then
+            v.Visible = true
+        else
+            v.Visible = false
+        end
+    end
+end
+
+connections["search_bar"] = search_bar:GetPropertyChangedSignal("Text"):Connect(function()
+    update_list()
+end)
+
+--// Player List
+local function add_player(player)
+    if lp == player then print("Skipping yourself.") return end
+    local frame = player_template:Clone()
+    
+    local display = player.DisplayName
+    
+    if display == player.Name then
+        display = nil
+    end
+
+    frame.Name = player.Name
+
+    if display then
+        frame.button.Text = display .. "(" .. player.Name .. ")"
+    else
+        frame.button.Text = player.Name
+    end
+
+    frame.button.MouseButton1Click:Connect(function()
+        update_selected(player)
+    end)
+
+    frame.Parent = player_holder
+end
+
+local function remove_player(player)
+    if player_holder:FindFirstChild(player.Name) then
+        local x = player_holder:FindFirstChild(player.Name)
+        if x:IsA("Frame") then
+            x:Destroy()
+        end
+    end
+end
+
+connections["p_added"] = ps.PlayerAdded:Connect(function(player)
+    add_player(player)
+end)
+
+connections["p_removed"] = ps.PlayerRemoving:Connect(function(player)
+    remove_player(player)
+end)
+
+for _, player in pairs(ps:GetChildren()) do
+    add_player(player)
+end

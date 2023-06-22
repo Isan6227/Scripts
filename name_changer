@@ -1,0 +1,54 @@
+local path = game:GetService("CoreGui").PlayerList.PlayerListMaster.OffsetFrame.PlayerScrollList.SizeOffsetFrame.ScrollingFrameContainer.ScrollingFrameClippingFrame.ScollingFrame.OffsetUndoFrame
+local names = {
+    "BlackswordmanilllI1",
+    "eco",
+    "espada_crash",
+    "ItsMe_Seif",
+    "Ixhtop777",
+    "MyToastWasStolen",
+    "Richbaconneww",
+    "RipGiGa_Display"
+}
+
+local changed = {}
+
+local list_size = game:GetService("CoreGui").PlayerList.PlayerListMaster.OffsetFrame.PlayerScrollList.SizeOffsetFrame.ScrollingFrameContainer
+local default = path:FindFirstChildWhichIsA("Frame"):Clone()
+
+for _, v in pairs(path:GetChildren()) do
+    v:Destroy()
+end
+
+local function create_player(name, order)
+    local x = default:Clone()
+    x.Name = tostring(order)
+    x.ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName.Text = name
+    x.ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName.TextColor = BrickColor.new("Grey")
+
+    if name == "espada_crash" then
+        x.ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName.TextColor = BrickColor.new("White")
+    end
+
+    x.Parent = path
+
+    local div = Instance.new("Frame")
+    div.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    div.BackgroundTransparency = 0.8
+    div.BorderSizePixel = 0
+    div.Position = UDim2.new(0, 0, 1, 0)
+    div.Size = UDim2.new(1, 0, 0, 1)
+    div.Parent = x
+
+    list_size.Size = UDim2.new(1, 0, 0, (#path:GetChildren() - 1) * 40)
+
+    if not path:FindFirstChildWhichIsA("UIListLayout") then
+        local ui_list = Instance.new("UIListLayout")
+        ui_list.SortOrder = Enum.SortOrder.Name
+        ui_list.Parent = path
+    end
+
+end
+
+for i = 1, #names do
+    create_player(names[i], i)
+end

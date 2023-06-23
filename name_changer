@@ -7,8 +7,7 @@ local names = {
     "Ixhtop777",
     "MyToastWasStolen",
     "Richbaconneww",
-    "RipGiGa_Display",
-    "ThunderBaller111"
+    "RipGiGa_Display"
 }
 
 local changed = {}
@@ -33,7 +32,7 @@ local function create_player(name, order)
     x.Parent = path
 
     local div = Instance.new("Frame")
-    div.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    div.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
     div.BackgroundTransparency = 0.8
     div.BorderSizePixel = 0
     div.Position = UDim2.new(0, 0, 1, 0)

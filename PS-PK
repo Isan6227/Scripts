@@ -202,7 +202,7 @@ local function kill()
     Handle_Initiate_S:FireServer("skil_ting_asd", game.Players.LocalPlayer, "arrow_knock_back", 5)
 
     if selected_player.Character then
-        Handle_Initiate_S:FireServer("arrow_knock_back_damage", game.Players.LocalPlayer.Character, game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame, selected_player.Character, 100000, 100000)
+        Handle_Initiate_S:FireServer("arrow_knock_back_damage", game.Players.LocalPlayer.Character, game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame, selected_player.Character, 500, 500)
     end
 end
 
@@ -273,3 +273,6 @@ end)
 for _, player in pairs(ps:GetChildren()) do
     add_player(player)
 end
+
+print("New Version.")
+
